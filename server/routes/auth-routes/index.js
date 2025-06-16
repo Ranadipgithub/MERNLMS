@@ -1,6 +1,8 @@
 const express = require('express');
 const {
-  registerUser, loginUser
+  registerUser, loginUser,
+  verifyOtp,
+  resendOtp
 } = require("../../controllers/auth-controller/index");
 const authenticate = require('../../middleware/auth-middleware');
 
@@ -8,6 +10,8 @@ const router = express.Router();
 
 router.post('/register', registerUser);
 router.post('/login', loginUser);
+router.post('/verify-otp', verifyOtp);
+router.post('/resend-otp', resendOtp);
 router.get('/check-auth', authenticate, (req, res) => {
     const user = req.user;
     if (!user) {

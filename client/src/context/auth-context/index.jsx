@@ -1,6 +1,7 @@
 import { initialSignInFormData, initialSignUpFormData } from "@/config";
 import { checkAuthService, loginService, registerService } from "@/services";
 import { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext(null);
 
@@ -12,11 +13,14 @@ export default function AuthProvider({ children }) {
         user: null
     })
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     async function handleRegisterUser(event) {
         event.preventDefault();
         const data = await registerService(signUpFormData);
-        console.log(data);
+        if (data.success) {
+            navigate("/auth/verify-email", { state: { userEmail: signUpFormData.userEmail } });
+        }
     }
 
     async function handleLoginUser(event) {
@@ -29,14 +33,18 @@ export default function AuthProvider({ children }) {
                 user: data.data.user
             })
         } else {
-            setAuth({
-                authenticate: false,
-                user: null
-            })
+            if (data.message.includes("User is not verified")) {
+                navigate("/auth/verify-email", { state: { userEmail: signInFormData.userEmail } });
+            } else {
+                setAuth({
+                    authenticate: false,
+                    user: null
+                })
+            }
         }
     }
 
-    function resetCredentials(){
+    function resetCredentials() {
         setAuth({
             authenticate: false,
             user: null

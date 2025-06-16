@@ -18,3 +18,13 @@ export async function checkAuthService() {
   const { data } = await axiosInstance.get("/auth/check-auth");
   return data;
 }
+
+export async function verifyOtpService({userEmail, otp}) {
+  const { data } = await axiosInstance.post("/auth/verify-otp", { userEmail, otp });
+  return data;
+}
+
+export async function resendOtpService({userEmail}) {
+  const { data } = await axiosInstance.post("/auth/resend-otp", { userEmail });
+  return data;
+}

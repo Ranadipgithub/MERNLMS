@@ -8,28 +8,62 @@ import InstructorPage from './pages/instructor'
 import StudentCommonLayout from './components/student-view/commonLayout'
 import StudentHomePage from './pages/student/home'
 import NotFoundPage from './pages/not-found'
+import VerifyEmailPage from './pages/verify-email'
 
 function App() {
   const { auth } = useContext(AuthContext);
   return (
     <Routes>
-      <Route path='/auth' element={<RouteGuard element={<AuthPage />} authenticated={auth?.authenticate} user={auth?.user} />} />
+      {/* Verify Email route */}
+      <Route
+        path="/auth/verify-email"
+        element={
+          <RouteGuard
+            element={<VerifyEmailPage />}
+            authenticated={auth.authenticate}
+            user={auth.user}
+          />
+        }
+      />
 
-      <Route path='/instructor' element={<RouteGuard element={<InstructorPage/>} authenticated={auth?.authenticate} user={auth?.user} />} />
+      {/* Auth (login/register) */}
+      <Route
+        path="/auth/*"
+        element={
+          <RouteGuard
+            element={<AuthPage />}
+            authenticated={auth.authenticate}
+            user={auth.user}
+          />
+        }
+      />
 
-      <Route path='/'
+      {/* Instructor */}
+      <Route
+        path="/instructor/*"
+        element={
+          <RouteGuard
+            element={<InstructorPage />}
+            authenticated={auth.authenticate}
+            user={auth.user}
+          />
+        }
+      />
+
+      {/* Student */}
+      <Route
+        path="/*"
         element={
           <RouteGuard
             element={<StudentCommonLayout />}
-            authenticated={auth?.authenticate}
-            user={auth?.user}
+            authenticated={auth.authenticate}
+            user={auth.user}
           />
         }
       >
-        <Route path='' element={<StudentHomePage />} />
-        <Route path='home' element={<StudentHomePage/>} />
-        <Route path = '*' element = {<NotFoundPage/>} />
-    
+        <Route index element={<StudentHomePage />} />
+        <Route path="home" element={<StudentHomePage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
   )
