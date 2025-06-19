@@ -4,6 +4,7 @@ const cors = require("cors");
 const authRoutes = require("./routes/auth-routes/index.js");
 const mediaRoutes = require("./routes/instructor-routes/media-routes.js");
 const instructorCourseRoutes = require("./routes/instructor-routes/course-routes.js");
+const studentCourseRoutes = require("./routes/student-routes/course-routes.js");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -29,6 +30,7 @@ mongoose.connect(MONGO_URI).then(() => {
 app.use('/auth', authRoutes);
 app.use('/media', mediaRoutes);
 app.use('/instructor/course', instructorCourseRoutes);
+app.use('/student/course', studentCourseRoutes);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);

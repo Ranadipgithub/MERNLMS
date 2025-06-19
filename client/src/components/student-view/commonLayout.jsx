@@ -1,10 +1,13 @@
 import { Outlet } from "react-router-dom";
+import Header from "./header";
 
 function StudentCommonLayout() {
   return (
     <div className="flex flex-col h-screen">
-      Common Content
-      <Outlet/>
+      <Header />
+      <main className="flex-1 flex flex-col ">
+        <Outlet />
+      </main>
     </div>
   );
 }
