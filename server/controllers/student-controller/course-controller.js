@@ -1,5 +1,3 @@
-// controllers/studentCourseController.js (or wherever you keep it)
-
 const Course = require("../../models/Course");
 
 const getAllStudentViewCourses = async (req, res) => {

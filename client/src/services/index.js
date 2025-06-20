@@ -94,3 +94,26 @@ export async function fetchStudentCourseDetailByIdService(id) {
   const { data } = await axiosInstance.get(`/student/course/get/details/${id}`)
   return data;
 }
+
+export async function createPaymentService(formData) {
+  const { data } = await axiosInstance.post(`/student/order/create`, formData);
+  return data;
+}
+
+export async function capturePaymentService(paymentId, payerId, orderId) {
+  const { data } = await axiosInstance.post(`/student/order/capture`, {
+    paymentId,
+    payerId,
+    orderId,
+  });
+  return data;
+}
+
+export async function fetchStudentBoughtCoursesByStudentIdService(studentId) {
+  if (!studentId) {
+    throw new Error("studentId is required to fetch bought courses");
+  }
+  console.log("studentId", studentId);
+  const { data } = await axiosInstance.get(`/student/bought-courses/get/${studentId}`);
+  return data;
+}

@@ -61,7 +61,7 @@ function Header() {
         </div>
 
         <div className="flex items-center space-x-6">
-          <Link to="/my-courses" className="flex items-center gap-1 text-gray-700">
+          <Link to="/student-courses" className="flex items-center gap-1 text-gray-700">
             <TvMinimalPlay className="w-6 h-6" />
             <span className="text-[16px] md:text-[18px] font-medium cursor-pointer">My Courses</span>
           </Link>

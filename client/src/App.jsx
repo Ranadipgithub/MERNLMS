@@ -13,6 +13,9 @@ import AddNewCoursePage from './pages/instructor/add-new-course'
 import StudentCoursePage from './pages/student/courses'
 import ScrollToTop from './components/smooth-scroll'
 import StudentCourseDetails from './pages/student/course-details'
+import PaypalPaymentReturn from './pages/student/payment-return'
+import StudentCoursesPage from './pages/student-courses'
+import StudentCourseProgressPage from './pages/student/course-progress'
 
 function App() {
   const { auth } = useContext(AuthContext)
@@ -93,6 +96,9 @@ function App() {
           <Route path="home" element={<StudentHomePage />} />
           <Route path="courses" element={<StudentCoursePage />} />
           <Route path="course/details/:id" element={<StudentCourseDetails />} />
+          <Route path="payment-return" element={<PaypalPaymentReturn />} />
+          <Route path="student-courses" element={<StudentCoursesPage />} />
+          <Route path="course-progress" element={<StudentCourseProgressPage />} />
           
           <Route path="*" element={<NotFoundPage />} />
         </Route>
