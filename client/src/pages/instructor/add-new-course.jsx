@@ -43,7 +43,7 @@ function AddNewCoursePage() {
   }
 
   async function handleCreateCourse() {
-    console.log(courseLandingFormData, courseCurriculumFormData);
+    // console.log(courseLandingFormData, courseCurriculumFormData);
     const courseFinalFormData = {
       instructorId: auth?.user?._id,
       instructorName: auth?.user?.userName,

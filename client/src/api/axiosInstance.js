@@ -5,9 +5,7 @@ const axiosInstance = axios.create({
 });
 
 axiosInstance.interceptors.request.use((config) => {
-    console.log("Request config:", config);
     const token = JSON.parse(sessionStorage.getItem('accessToken')) || "";
-    console.log("Token:", token);
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
     }

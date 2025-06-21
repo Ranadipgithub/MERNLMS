@@ -45,7 +45,7 @@ function AuthPage() {
     );
   }
 
-  console.log(signInFormData);
+  // console.log(signInFormData);
 
   return (
     <div className="flex flex-col min-h-screen">

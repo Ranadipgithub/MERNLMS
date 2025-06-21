@@ -57,7 +57,7 @@ function StudentCourseDetails() {
   // Redirect effect: when approvalUrl is truthy, redirect once.
   useEffect(() => {
     if (approvalUrl) {
-      console.log("Redirecting to PayPal approval URL:", approvalUrl);
+      // console.log("Redirecting to PayPal approval URL:", approvalUrl);
       window.location.href = approvalUrl;
       // If you want new tab: window.open(approvalUrl, "_blank");
     }
@@ -94,9 +94,9 @@ function StudentCourseDetails() {
         coursePricing: StudentCourseDetails.pricing,
       };
 
-      console.log("Calling createPaymentService with payload:", paymentPayload);
+      // console.log("Calling createPaymentService with payload:", paymentPayload);
       const response = await createPaymentService(paymentPayload);
-      console.log("createPaymentService response:", response);
+      // console.log("createPaymentService response:", response);
 
       if (response.success && response.data) {
         // Try both possible fields:
