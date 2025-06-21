@@ -19,7 +19,7 @@ const allowedOrigins = [
   process.env.CLIENT_URL
 ];
 
-app.use(cors({
+const corsOptions = {
     origin: function (origin, callback) {
         if (!origin || allowedOrigins.includes(origin)) {
             callback(null, true);
@@ -27,10 +27,13 @@ app.use(cors({
             callback(new Error('Not allowed by CORS'));
         }
     },
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-}));
+    credentials: true
+};
 
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));  
 
 app.use(express.json());
 
