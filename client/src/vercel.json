@@ -1,7 +1,7 @@
 {
-  "rewrites": [
-    { "source": "/payment-return", "destination": "/index.html" },
-    { "source": "/payment-cancel", "destination": "/index.html" },
-    { "source": "/:path*", "destination": "/index.html" }
+  "routes": [
+    { "src": "/payment-return", "dest": "/index.html" },
+    { "src": "/payment-cancel", "dest": "/index.html" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
