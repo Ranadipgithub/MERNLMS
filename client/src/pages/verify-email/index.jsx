@@ -48,7 +48,7 @@ export default function VerifyEmailPage() {
     try {
       const data = await resendOtpService({ userEmail });
       if (data.success) {
-        setMessage("OTP resent. Check your email.");
+        setMessage("OTP resent. Check your email (and spam/junk folder).");
       } else {
         setError(data.message || "Failed to resend OTP.");
       }
@@ -65,7 +65,12 @@ export default function VerifyEmailPage() {
   return (
     <div className="max-w-md mx-auto mt-10 p-6 border rounded">
       <h2 className="text-xl font-semibold mb-4">Verify Your Email</h2>
-      <p className="mb-4">We sent an OTP to: <strong>{userEmail}</strong></p>
+      <p className="mb-1">
+        We sent an OTP to: <strong>{userEmail}</strong>
+      </p>
+      <p className="mb-4 text-sm text-gray-600">
+        If you dont see the email, please check your spam/junk folder.
+      </p>
       <form onSubmit={handleVerify}>
         <label htmlFor="otp" className="block mb-1">Enter OTP:</label>
         <input
