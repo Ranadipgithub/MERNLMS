@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-    baseURL: import.meta.env.VITE_BACKEND_URL || "http://localhost:5000",
+    baseURL: 'https://lms-backend-three-indol.vercel.app' || "http://localhost:5000",
 });
 
 axiosInstance.interceptors.request.use((config) => {
