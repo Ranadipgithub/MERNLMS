@@ -18,7 +18,7 @@ import {
   IndianRupee,
 } from "lucide-react";
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Dialog,
   DialogContent,
@@ -27,6 +27,9 @@ import {
   DialogClose,
 } from "@/components/ui/dialog";
 import { AuthContext } from "@/context/auth-context";
+import Spinner from "@/components/loader";
+
+
 
 function StudentCourseDetails() {
   const {
@@ -39,6 +42,7 @@ function StudentCourseDetails() {
   } = useContext(StudentContext);
   const { auth } = useContext(AuthContext);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [progress, setProgress] = useState(0);
   const [selectedVideoUrl, setSelectedVideoUrl] = useState(null);
@@ -48,6 +52,7 @@ function StudentCourseDetails() {
   // approvalUrl state: once set to a non-empty string, triggers redirect.
   const [approvalUrl, setApprovalUrl] = useState("");
   const [isCreatingPayment, setIsCreatingPayment] = useState(false);
+  const [isCoursePurchased, setIsCoursePurchased] = useState(false);
 
   // Redirect effect: when approvalUrl is truthy, redirect once.
   useEffect(() => {
@@ -144,12 +149,16 @@ function StudentCourseDetails() {
     async function fetchDetail() {
       setLoadingState(true);
       try {
-        const response = await fetchStudentCourseDetailByIdService(currentCourseDetailsId);
+        const response = await fetchStudentCourseDetailByIdService(currentCourseDetailsId, auth.user.userId);
         if (cancelled) return;
+        console.log(response);
         if (response.success) {
           setStudentCourseDetails(response.data);
+          setLoadingState(false);
+          setIsCoursePurchased(response?.isCoursePurchased)
         } else {
           setStudentCourseDetails(null);
+          setIsCoursePurchased(false);
         }
       } catch (err) {
         console.error("Fetch error:", err);
@@ -175,12 +184,15 @@ function StudentCourseDetails() {
     setExpandedSections((prev) => ({ ...prev, [index]: !prev[index] }));
   };
 
+
+
   if (loadingState) {
+    
     return (
       <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] bg-gradient-to-b from-cyan-100/70 to-white">
         <div className="w-full max-w-md px-4">
-          <Progress value={progress} className="w-full" />
-          <p className="text-center mt-4 text-gray-600">Loading course details...</p>
+          <Spinner />;
+          {/* <p className="text-center mt-4 text-gray-600">Loading course details...</p> */}
         </div>
       </div>
     );
@@ -344,13 +356,22 @@ function StudentCourseDetails() {
                       <span>4 lessons</span>
                     </div>
                   </div>
-                  <Button
-                    onClick={handleCreatePayment}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 mb-6"
-                    disabled={isCreatingPayment}
-                  >
-                    {isCreatingPayment ? "Processing..." : "Enroll Now"}
-                  </Button>
+                  {isCoursePurchased ? (
+                    <Button
+                      onClick={() => navigate(`/course-progress/${StudentCourseDetails._id}`)}
+                      className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 mb-6 cursor-pointer"
+                    >
+                      Go to Course
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={handleCreatePayment}
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 mb-6 cursor-pointer"
+                      disabled={isCreatingPayment}
+                    >
+                      {isCreatingPayment ? "Processing..." : "Enroll Now"}
+                    </Button>
+                  )}
                   <div>
                     <h3 className="font-semibold text-gray-900 mb-4">What's in the course?</h3>
                     <ul className="space-y-3 text-sm text-gray-700">

@@ -19,12 +19,15 @@ export async function checkAuthService() {
   return data;
 }
 
-export async function verifyOtpService({userEmail, otp}) {
-  const { data } = await axiosInstance.post("/auth/verify-otp", { userEmail, otp });
+export async function verifyOtpService({ userEmail, otp }) {
+  const { data } = await axiosInstance.post("/auth/verify-otp", {
+    userEmail,
+    otp,
+  });
   return data;
 }
 
-export async function resendOtpService({userEmail}) {
+export async function resendOtpService({ userEmail }) {
   const { data } = await axiosInstance.post("/auth/resend-otp", { userEmail });
   return data;
 }
@@ -42,7 +45,7 @@ export async function mediaUploadService(formData, onProgressCallback) {
   return data;
 }
 
-export async function mediaDeleteService( public_id ) {
+export async function mediaDeleteService(public_id) {
   if (!public_id) {
     throw new Error("public_id is required for media deletion");
   }
@@ -61,12 +64,17 @@ export const fetchInstructorCoursesService = async () => {
 };
 
 export async function fetchCourseDetailByIdService(id) {
-  const { data } = await axiosInstance.get(`/instructor/course/get/detail/${id}`);
+  const { data } = await axiosInstance.get(
+    `/instructor/course/get/detail/${id}`
+  );
   return data;
 }
 
 export async function updateCourseByIdService(id, formData) {
-  const { data } = await axiosInstance.put(`/instructor/course/update/${id}`, formData);
+  const { data } = await axiosInstance.put(
+    `/instructor/course/update/${id}`,
+    formData
+  );
   return data;
 }
 
@@ -85,13 +93,17 @@ export async function mediaBulkUploadService(formData, onProgressCallback) {
 
 export async function fetchStudentViewCoursesService(queryString) {
   // queryString is e.g. "category=web-development,backend-development&level=beginner&sortBy=price-lowtohigh"
-  const url = queryString ? `/student/course/get?${queryString}` : `/student/course/get`
-  const { data } = await axiosInstance.get(url)
-  return data
+  const url = queryString
+    ? `/student/course/get?${queryString}`
+    : `/student/course/get`;
+  const { data } = await axiosInstance.get(url);
+  return data;
 }
 
-export async function fetchStudentCourseDetailByIdService(id) {
-  const { data } = await axiosInstance.get(`/student/course/get/details/${id}`)
+export async function fetchStudentCourseDetailByIdService(id, studentId) {
+  const { data } = await axiosInstance.get(
+    `/student/course/get/details/${id}/${studentId}`
+  );
   return data;
 }
 
@@ -114,6 +126,32 @@ export async function fetchStudentBoughtCoursesByStudentIdService(studentId) {
     throw new Error("studentId is required to fetch bought courses");
   }
   console.log("studentId", studentId);
-  const { data } = await axiosInstance.get(`/student/bought-courses/get/${studentId}`);
+  const { data } = await axiosInstance.get(
+    `/student/bought-courses/get/${studentId}`
+  );
   return data;
 }
+
+export async function getCurrentCourseProgressService(userId, courseId) {
+  const { data } = await axiosInstance.get(
+    `/student/course-progress/get/${userId}/${courseId}`
+  );
+  return data;
+}
+
+export async function markLectureAsViewedService(userId, courseId, lectureId) {
+  const { data } = await axiosInstance.post(`/student/course-progress/mark-lecture-viewed`, {
+    userId,
+    courseId,
+    lectureId,
+  });
+  return data;
+}
+
+export async function resetCourseProgressService(userId, courseId) {
+  const { data } = await axiosInstance.post(`/student/course-progress/reset-progress`, {
+    userId,
+    courseId,
+  });
+  return data;
+} 

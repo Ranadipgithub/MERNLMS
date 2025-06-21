@@ -1,8 +1,8 @@
 const Course = require("../../models/Course");
+const StudentCourses = require("../../models/StudentCourses")
 
 const getAllStudentViewCourses = async (req, res) => {
   try {
-    // Extract raw query params
     const {
       category = [],
       level = [],
@@ -67,7 +67,7 @@ const getAllStudentViewCourses = async (req, res) => {
 
 const getStudentCourseDetailById = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id, studentId } = req.params;
     const course = await Course.findById(id);
     if (!course) {
       return res.status(404).json({
@@ -75,10 +75,19 @@ const getStudentCourseDetailById = async (req, res) => {
         message: "Course not found",
       });
     }
+
+    // check whether the current student already purchased the course or not 
+    const studentCourses = await StudentCourses.findOne({
+      userId: studentId
+    })
+
+    const isPurchased = studentCourses.courses.findIndex((item) => item.courseId === id) > -1
+
     res.status(200).json({
       success: true,
       message: "Course fetched successfully",
       data: course,
+      isCoursePurchased: isPurchased,
     });
   } catch (err) {
     console.error("Error in getStudentCourseDetailById:", err);

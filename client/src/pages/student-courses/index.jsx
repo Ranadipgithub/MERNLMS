@@ -50,8 +50,6 @@ const StudentCoursesPage = () => {
     fetchStudentBoughtCourses();
   }, []);
 
-
-
   return (
     <div className="container mx-auto px-8 py-8">
       <h2 className="text-3xl font-medium text-gray-800 text-center mb-6">
@@ -63,7 +61,7 @@ const StudentCoursesPage = () => {
         ) : studentBoughtCourses && studentBoughtCourses.length > 0 ? (
           studentBoughtCourses.map((course) => (
             <Link
-              to={`/course/details/${course._id}`}
+              to={`/course-progress/${course.courseId}`}
               key={course._id}
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
               className=" bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow flex flex-col"
