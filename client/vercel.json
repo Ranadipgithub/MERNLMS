@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/payment-return", "destination": "/index.html" },
+    { "source": "/payment-cancel",  "destination": "/index.html" },
+    { "source": "/:path*",           "destination": "/index.html" }
+  ]
+}

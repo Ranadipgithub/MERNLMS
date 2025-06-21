@@ -1,7 +1,0 @@
-{
-  "routes": [
-    { "src": "/payment-return", "dest": "/index.html" },
-    { "src": "/payment-cancel", "dest": "/index.html" },
-    { "src": "/(.*)", "dest": "/index.html" }
-  ]
-}
