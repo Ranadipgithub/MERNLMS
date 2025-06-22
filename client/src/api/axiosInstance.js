@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-    baseURL: 'https://lmsbackend-zkny.onrender.com' || "http://localhost:5000",
+    baseURL: import.meta.env.VITE_BACKEND_URL || 'http://localhost:3000/api',
 });
 
 axiosInstance.interceptors.request.use((config) => {

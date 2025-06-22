@@ -1,5 +1,6 @@
 const Course = require("../../models/Course");
 const StudentCourses = require("../../models/StudentCourses")
+const mongoose = require("mongoose");
 
 const getAllStudentViewCourses = async (req, res) => {
   try {
@@ -68,6 +69,21 @@ const getAllStudentViewCourses = async (req, res) => {
 const getStudentCourseDetailById = async (req, res) => {
   try {
     const { id, studentId } = req.params;
+    // Validate that `id` is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid course ID"
+      });
+    }
+    // Optionally: if you have authentication middleware, you can get studentId from req.user._id 
+    // instead of trusting a URL param. Example:
+    // const studentId = req.user?.id;
+    // That avoids passing studentId in URL and ensures one user cannot fetch another’s purchase status.
+
+    console.log(`Fetching course detail for courseId=${id}, studentId=${studentId}`);
+
+    // Fetch the course
     const course = await Course.findById(id);
     if (!course) {
       return res.status(404).json({
@@ -76,14 +92,27 @@ const getStudentCourseDetailById = async (req, res) => {
       });
     }
 
-    // check whether the current student already purchased the course or not 
-    const studentCourses = await StudentCourses.findOne({
-      userId: studentId
-    })
+    // Fetch the StudentCourses document for this user
+    let studentCourses = null;
+    let isPurchased = false;
+    if (mongoose.Types.ObjectId.isValid(studentId)) {
+      studentCourses = await StudentCourses.findOne({ userId: studentId });
+    } else {
+      console.warn(`Invalid studentId format: ${studentId}`);
+    }
 
-    const isPurchased = studentCourses.courses.findIndex((item) => item.courseId === id) > -1
+    if (studentCourses && Array.isArray(studentCourses.courses)) {
+      // Compare as strings to avoid ObjectId mismatches
+      isPurchased = studentCourses.courses.some(
+        item => item.courseId.toString() === id
+      );
+    } else {
+      // No StudentCourses doc exists for this user, so not purchased
+      isPurchased = false;
+      console.log(`No StudentCourses doc for user ${studentId}; isPurchased=false`);
+    }
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Course fetched successfully",
       data: course,
@@ -91,7 +120,7 @@ const getStudentCourseDetailById = async (req, res) => {
     });
   } catch (err) {
     console.error("Error in getStudentCourseDetailById:", err);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Failed to get course",
       error: err.message,

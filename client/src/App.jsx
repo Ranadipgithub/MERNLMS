@@ -99,7 +99,7 @@ function App() {
           <Route path="payment-return" element={<PaypalPaymentReturn />} />
           <Route path="student-courses" element={<StudentCoursesPage />} />
           <Route path="course-progress/:id" element={<StudentCourseProgressPage />} />
-          
+
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

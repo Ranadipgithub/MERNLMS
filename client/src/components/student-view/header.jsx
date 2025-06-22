@@ -15,10 +15,10 @@ function Header() {
   const { resetCredentials } = useContext(AuthContext)
   const location = useLocation()
   const isHomePage =
-  location.pathname === "/" ||
-  location.pathname.startsWith("/course/details/");
+    location.pathname === "/" ||
+    location.pathname.startsWith("/course/details/");
 
-  const {auth} = useContext(AuthContext);
+  const { auth } = useContext(AuthContext);
   const navigate = useNavigate();
 
 
@@ -64,6 +64,14 @@ function Header() {
         </div>
 
         <div className="flex items-center space-x-6">
+          {
+            auth?.user?.role === "instructor" ?
+              <Link to="/instructor" className="flex items-center gap-1 text-gray-700">
+                <Button className="text-[16px] md:text-[18px] font-medium cursor-pointer">
+                  Instructor Dashboard
+                </Button>
+              </Link> : null
+          }
           <Link to="/student-courses" className="flex items-center gap-1 text-gray-700">
             <TvMinimalPlay className="w-6 h-6" />
             <span className="text-[16px] md:text-[18px] font-medium cursor-pointer">My Courses</span>
