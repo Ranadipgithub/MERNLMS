@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation, useNavigate } from "react-router-dom"
 import { Button } from "../ui/button"
 import { ChevronDown, MonitorPlayIcon as TvMinimalPlay } from "lucide-react"
 import { useContext } from "react"
@@ -17,6 +17,9 @@ function Header() {
   const isHomePage =
   location.pathname === "/" ||
   location.pathname.startsWith("/course/details/");
+
+  const {auth} = useContext(AuthContext);
+  const navigate = useNavigate();
 
 
   function handleLogout() {
@@ -65,9 +68,11 @@ function Header() {
             <TvMinimalPlay className="w-6 h-6" />
             <span className="text-[16px] md:text-[18px] font-medium cursor-pointer">My Courses</span>
           </Link>
-          <Button onClick={handleLogout} className="text-[16px] md:text-[18px] font-medium cursor-pointer">
-            Sign Out
-          </Button>
+          {
+            auth?.authenticate ? <Button onClick={handleLogout} className="text-[16px] md:text-[18px] font-medium cursor-pointer">
+              Sign Out
+            </Button> : <Button onClick={() => { navigate("/auth") }} className={"text-[16px] md:text-[18px] font-medium cursor-pointer"}>Sign In</Button>
+          }
         </div>
       </div>
     </header>

@@ -6,7 +6,7 @@ function RouteGuard({ authenticated, user, element }) {
   const path = location.pathname;
 
   if (!authenticated) {
-    if (path.startsWith("/auth")) {
+    if (path.startsWith("/auth") || path === "/" || path.startsWith("/courses")) {
       return <Fragment>{element}</Fragment>;
     }
     return <Navigate to="/auth" replace state={{ from: location }} />;
